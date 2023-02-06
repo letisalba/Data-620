@@ -1,0 +1,18 @@
+### Load Users
+LOAD CSV WITH HEADERS FROM 'file:///users.csv' AS line     
+  CREATE (user: User {id: line.userid})  
+  SET user.username=line.username RETURN user;
+  
+
+### Load Groups
+LOAD CSV WITH HEADERS FROM 'file:///groups.csv' AS line        
+CREATE (group: Group {id: line.id})  
+SET group.groupname=line.group_name RETURN group;
+
+
+### CREATE RELATIONSHIP between Users and Groups
+LOAD CSV WITH HEADERS FROM 'file:///group_members.csv' AS line       
+MATCH (user: User {username: line.username})  
+MATCH (group: Group{ id: line.group_id})  
+CREATE (user)-[:HAS_ACCESS]->(group) 
+RETURN user, group;
