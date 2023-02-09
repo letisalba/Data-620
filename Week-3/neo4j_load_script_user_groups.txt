@@ -16,3 +16,10 @@ MATCH (user: User {username: line.username})
 MATCH (group: Group{ id: line.group_id})  
 CREATE (user)-[:HAS_ACCESS]->(group) 
 RETURN user, group;
+
+### Additional to read from GitHub link
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/letisalba/Data-620/master/Week-3/group_members.csv' AS line       
+MATCH (user: User {username: line.username})  
+MATCH (group: Group{ id: line.group_id})  
+CREATE (user)-[:HAS_ACCESS]->(group) 
+RETURN user, group;
