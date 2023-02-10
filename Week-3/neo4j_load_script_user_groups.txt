@@ -17,9 +17,22 @@ MATCH (group: Group{ id: line.group_id})
 CREATE (user)-[:HAS_ACCESS]->(group) 
 RETURN user, group;
 
-### Additional to read from GitHub link
-LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/letisalba/Data-620/master/Week-3/group_members.csv' AS line       
-MATCH (user: User {username: line.username})  
+
+LOAD CSV WITH HEADERS FROM 'file:///sub-groups.csv' AS line
+  CREATE (subgroup: SubGroup {id: line.sub_group_id, subgroupname: line.sub_group_name, groupid: line.group_id})  
+RETURN subgroup;
+
+### CREATE RELATIONSHIP between SUB-GROUPS and Groups
+LOAD CSV WITH HEADERS FROM 'file:///sub-groups.csv' AS line       
+MATCH (subgroup: SubGroup {subgroupname: line.sub_group_name})  
 MATCH (group: Group{ id: line.group_id})  
-CREATE (user)-[:HAS_ACCESS]->(group) 
-RETURN user, group;
+CREATE (subgroup)-[:INCLUDED_IN]->(group) 
+RETURN subgroup, group;
+
+
+### CREATE RELATIONSHIP between Users and SubGroups
+LOAD CSV WITH HEADERS FROM 'file:///users-sub-groups.csv' AS line       
+MATCH (user: User {username: line.username})  
+MATCH (subgroup: SubGroup{ id: line.sub_group_id})  
+CREATE (user)-[:PART_OF]->(subgroup) 
+RETURN user, subgroup;
