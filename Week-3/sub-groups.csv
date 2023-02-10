@@ -1,0 +1,13 @@
+sub_group_id,sub_group_name,group_id
+1001,SUPER_ADMIN,1
+1002,APP_ADMIN,1
+15001,North America,15
+15002,Latin America,15
+15003,Africa,15
+15004,Asia,15
+25001,Financial Reports,25
+25002,Logistics Reports,25
+25003,BI Reports,25
+22001,Ground,22
+22002,Air,22
+22003,Ocean,22
