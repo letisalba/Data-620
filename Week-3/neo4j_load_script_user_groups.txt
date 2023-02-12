@@ -1,29 +1,29 @@
 ### Load Users
-LOAD CSV WITH HEADERS FROM 'file:///users.csv' AS line     
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/letisalba/Data-620/master/Week-3/users.csv' AS line     
   CREATE (user: User {id: line.userid})  
   SET user.username=line.username RETURN user;
   
 
 ### Load Groups
-LOAD CSV WITH HEADERS FROM 'file:///groups.csv' AS line        
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/letisalba/Data-620/master/Week-3/groups.csv' AS line        
 CREATE (group: Group {id: line.id})  
 SET group.groupname=line.group_name RETURN group;
 
 
 ### CREATE RELATIONSHIP between Users and Groups
-LOAD CSV WITH HEADERS FROM 'file:///group_members.csv' AS line       
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/letisalba/Data-620/master/Week-3/group_members.csv' AS line       
 MATCH (user: User {username: line.username})  
 MATCH (group: Group{ id: line.group_id})  
 CREATE (user)-[:HAS_ACCESS]->(group) 
 RETURN user, group;
 
-
-LOAD CSV WITH HEADERS FROM 'file:///sub-groups.csv' AS line
+### SUBGROUPS
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/letisalba/Data-620/master/Week-3/sub-groups.csv' AS line
   CREATE (subgroup: SubGroup {id: line.sub_group_id, subgroupname: line.sub_group_name, groupid: line.group_id})  
 RETURN subgroup;
 
 ### CREATE RELATIONSHIP between SUB-GROUPS and Groups
-LOAD CSV WITH HEADERS FROM 'file:///sub-groups.csv' AS line       
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/letisalba/Data-620/master/Week-3/sub-groups.csv' AS line       
 MATCH (subgroup: SubGroup {subgroupname: line.sub_group_name})  
 MATCH (group: Group{ id: line.group_id})  
 CREATE (subgroup)-[:INCLUDED_IN]->(group) 
@@ -31,7 +31,7 @@ RETURN subgroup, group;
 
 
 ### CREATE RELATIONSHIP between Users and SubGroups
-LOAD CSV WITH HEADERS FROM 'file:///users-sub-groups.csv' AS line       
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/letisalba/Data-620/master/Week-3/users-sub-groups.csv' AS line       
 MATCH (user: User {username: line.username})  
 MATCH (subgroup: SubGroup{ id: line.sub_group_id})  
 CREATE (user)-[:PART_OF]->(subgroup) 
